@@ -1,0 +1,203 @@
+/* Variáveis de Cores e Hierarquia Visual */
+:root {
+    --bg-primary: #f4f7f6;
+    --bg-card: #ffffff;
+    --text-main: #1a1a1a;
+    --accent-color: #2563eb;
+    --accent-hover: #1d4ed8;
+    --card-back: #1e293b;
+    --success: #16a34a;
+}
+
+/* Modo Escuro (Acionado via JS) */
+body.dark-mode {
+    --bg-primary: #0f172a;
+    --bg-card: #1e293b;
+    --text-main: #f8fafc;
+    --accent-color: #3b82f6;
+    --accent-hover: #60a5fa;
+    --card-back: #334155;
+}
+
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 20px;
+}
+
+/* Layout do Cabeçalho com Flexbox */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--accent-color);
+    margin-bottom: 30px;
+}
+
+header button {
+    padding: 8px 16px;
+    cursor: pointer;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+header button:hover {
+    background-color: var(--accent-hover);
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+section {
+    background: var(--bg-card);
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: var(--accent-color);
+}
+
+/* Tabuleiro do Jogo da Memória em Flexbox Responsivo */
+.game-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+#reset-game-btn {
+    padding: 6px 12px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.memory-game {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Estilo das Cartas */
+.memory-card {
+    width: calc(25% - 10px);
+    height: 100px;
+    background-color: var(--card-back);
+    color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    padding: 5px;
+}
+
+.memory-card:hover {
+    transform: scale(1.03);
+}
+
+/* Estados da Carta via JS */
+.memory-card.flipped {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.memory-card.matched {
+    background-color: var(--success);
+    color: white;
+    cursor: default;
+    transform: none;
+}
+
+/* Formulário Semântico */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-group input, .form-group select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: var(--bg-primary);
+    color: var(--text-main);
+}
+
+#submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+#form-message {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(22, 163, 74, 0.2);
+    border-left: 4px solid var(--success);
+    border-radius: 4px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* 📱 Ajustes de Responsividade (Media Queries) */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .memory-card {
+        width: calc(50% - 10px); /* 2 cartas por linha no celular */
+        height: 80px;
+        font-size: 0.8rem;
+    }
+}
