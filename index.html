@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Cidadania Digital & IA</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Acessibilidade e Cabeçalho -->
+    <header>
+        <h1>Cidadania Digital & IA</h1>
+        <button id="toggle-dark-mode" aria-label="Alternar modo escuro">🌓 Alternar Modo</button>
+    </header>
+
+    <main>
+        <!-- Introdução Teórica / Alinhamento com o Tema -->
+        <section class="intro-section">
+            <h2>O Impacto das Deepfakes e da Desinformação</h2>
+            <p>A Inteligência Artificial transformou a criação de conteúdos. Aprenda a diferenciar fatos de mídias manipuladas jogando o nosso mini-game de conscientização abaixo.</p>
+        </section>
+
+        <!-- Seção Interativa: Jogo da Memória -->
+        <section class="game-section">
+            <h2>Jogo da Memória: Fato ou Fake?</h2>
+            <div class="game-controls">
+                <p>Tentativas: <span id="attempts-counter">0</span></p>
+                <button id="reset-game-btn">Reiniciar Jogo</button>
+            </div>
+            <!-- Grid do Jogo -->
+            <div class="memory-game" id="game-grid"></div>
+        </section>
+
+        <!-- Formulário Semântico de Coleta de Dados/Engajamento -->
+        <section class="form-section">
+            <h2>Faça Parte da Mudança</h2>
+            <p>Você já foi impactado por uma notícia falsa esta semana?</p>
+            <form id="feedback-form">
+                <div class="form-group">
+                    <label for="user-name">Seu Nome:</label>
+                    <input type="text" id="user-name" required placeholder="Digite aqui...">
+                </div>
+
+                <div class="form-group">
+                    <label for="experience-select">Frequência com que vê Deepfakes:</label>
+                    <select id="experience-select" required>
+                        <option value="">Selecione...</option>
+                        <option value="alta">Diariamente</option>
+                        <option value="media">Às vezes</option>
+                        <option value="baixa">Raramente/Nunca</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="submit-btn">Enviar Resposta</button>
+            </form>
+            <div id="form-message" class="hidden"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Projeto Cidadania Digital. Desenvolvido para fins educacionais.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
