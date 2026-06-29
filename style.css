@@ -5,18 +5,19 @@
     --text-main: #1a1a1a;
     --accent-color: #2563eb;
     --accent-hover: #1d4ed8;
-    --card-back: #1e293b;
+    --card-back-bg: #1e293b;
     --success: #16a34a;
+    --error: #ef4444;
 }
 
-/* Modo Escuro (Acionado via JS) */
+/* Modo Escuro (Acionado via JS adicionando a classe no body) */
 body.dark-mode {
     --bg-primary: #0f172a;
     --bg-card: #1e293b;
     --text-main: #f8fafc;
     --accent-color: #3b82f6;
     --accent-hover: #60a5fa;
-    --card-back: #334155;
+    --card-back-bg: #334155;
 }
 
 /* Reset Básico */
@@ -59,7 +60,7 @@ header button:hover {
 }
 
 main {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
 }
 
@@ -76,7 +77,7 @@ h2 {
     color: var(--accent-color);
 }
 
-/* Tabuleiro do Jogo da Memória em Flexbox Responsivo */
+/* Tabuleiro do Jogo da Memória */
 .game-controls {
     display: flex;
     justify-content: space-between;
@@ -95,46 +96,114 @@ h2 {
 }
 
 .memory-game {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
     justify-content: center;
 }
 
 /* Estilo das Cartas */
 .memory-card {
-    width: calc(25% - 10px);
-    height: 100px;
-    background-color: var(--card-back);
-    color: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    font-size: 0.9rem;
-    text-align: center;
+    height: 160px;
+    position: relative;
     border-radius: 8px;
     cursor: pointer;
     user-select: none;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: var(--card-back-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease;
 }
 
 .memory-card:hover {
-    transform: scale(1.03);
+    transform: scale(1.02);
 }
 
-/* Estados da Carta via JS */
+/* Conteúdos Internos da Carta */
+.card-front-side {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-back-side {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card-back-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.3); /* Escurece a imagem para dar leitura ao texto */
+}
+
+.card-back-side p {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+/* Estados Dinâmicos via JS */
 .memory-card.flipped {
-    background-color: var(--accent-color);
-    color: white;
+    background-color: transparent;
 }
 
+.memory-card.flipped .card-front-side {
+    display: none;
+}
+
+.memory-card.flipped .card-back-side {
+    display: block;
+    border: 3px solid var(--accent-color);
+}
+
+/* Diferenciação de Cores para Fato e Fake */
+.memory-card.flipped .card-back-side.type-fato {
+    border-color: var(--success);
+}
+
+.memory-card.flipped .card-back-side.type-fake {
+    border-color: var(--error);
+}
+
+/* Par Correto Encontrado */
 .memory-card.matched {
-    background-color: var(--success);
-    color: white;
     cursor: default;
     transform: none;
+}
+
+.memory-card.matched .card-front-side {
+    display: none;
+}
+
+.memory-card.matched .card-back-side {
+    display: block;
+    border: 3px solid var(--success);
+}
+
+.memory-card.matched .card-back-side img {
+    filter: brightness(0.4);
 }
 
 /* Formulário Semântico */
@@ -187,17 +256,21 @@ footer {
     opacity: 0.7;
 }
 
-/* 📱 Ajustes de Responsividade (Media Queries) */
+/* 📱 Ajustes de Responsividade */
+@media (max-width: 768px) {
+    .memory-game {
+        grid-template-columns: repeat(2, 1fr); /* 2 cartas por linha no mobile */
+    }
+    
+    .memory-card {
+        height: 140px;
+    }
+}
+
 @media (max-width: 600px) {
     header {
         flex-direction: column;
         gap: 10px;
         text-align: center;
-    }
-
-    .memory-card {
-        width: calc(50% - 10px); /* 2 cartas por linha no celular */
-        height: 80px;
-        font-size: 0.8rem;
     }
 }
