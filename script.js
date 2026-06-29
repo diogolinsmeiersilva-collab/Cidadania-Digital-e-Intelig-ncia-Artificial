@@ -1,13 +1,13 @@
-// Dados do Jogo - Pares Temáticos (Fato vs Fake de IA)
+// Dados do Jogo - Pares Temáticos Visuais (Imagens Reais e Textos Educativos)
 const cardData = [
-    { id: 1, text: "FATO: Deepfakes usam Redes Generativas Adversariais (GANs)" },
-    { id: 1, text: "FATO: Deepfakes usam Redes Generativas Adversariais (GANs)" },
-    { id: 2, text: "FAKE: Vídeos de IA possuem sincronia labial 100% perfeita" },
-    { id: 2, text: "FAKE: Vídeos de IA possuem sincronia labial 100% perfeita" },
-    { id: 3, text: "FATO: O cansaço ocular ou piscar lento revela vídeos falsos" },
-    { id: 3, text: "FATO: O cansaço ocular ou piscar lento revela vídeos falsos" },
-    { id: 4, text: "FAKE: Ferramentas automatizadas barram 100% dos fakes" },
-    { id: 4, text: "FAKE: Ferramentas automatizadas barram 100% dos fakes" }
+    { id: 1, type: "fato", img: "https://unsplash.com", text: "FATO: Deepfakes usam Redes Generativas Adversariais (GANs)" },
+    { id: 1, type: "fato", img: "https://unsplash.com", text: "FATO: Deepfakes usam Redes Generativas Adversariais (GANs)" },
+    { id: 2, type: "fake", img: "https://unsplash.com", text: "FAKE: Vídeos de IA possuem sincronia labial 100% perfeita" },
+    { id: 2, type: "fake", img: "https://unsplash.com", text: "FAKE: Vídeos de IA possuem sincronia labial 100% perfeita" },
+    { id: 3, type: "fato", img: "https://unsplash.com", text: "FATO: O cansaço ocular ou piscar lento revela vídeos falsos" },
+    { id: 3, type: "fato", img: "https://unsplash.com", text: "FATO: O cansaço ocular ou piscar lento revela vídeos falsos" },
+    { id: 4, type: "fake", img: "https://unsplash.com", text: "FAKE: Ferramentas automatizadas barram 100% dos fakes" },
+    { id: 4, type: "fake", img: "https://unsplash.com", text: "FAKE: Ferramentas automatizadas barram 100% dos fakes" }
 ];
 
 // Seletores do DOM
@@ -49,7 +49,15 @@ function initGame() {
         const cardElement = document.createElement("div");
         cardElement.classList.add("memory-card");
         cardElement.dataset.id = item.id;
-        cardElement.textContent = item.text;
+
+        // Estrutura com Frente (?) e Verso (Imagem + Texto Informativo)
+        cardElement.innerHTML = `
+            <div class="card-front-side">?</div>
+            <div class="card-back-side type-${item.type}">
+                <img src="${item.img}" alt="Ilustração sobre IA">
+                <p>${item.text}</p>
+            </div>
+        `;
 
         cardElement.addEventListener("click", handleCardClick);
         gameGrid.appendChild(cardElement);
@@ -82,9 +90,12 @@ function checkMatch() {
     const [cardOne, cardTwo] = flippedCards;
 
     if (cardOne.dataset.id === cardTwo.dataset.id) {
-        // Sucesso: mantém abertas e pinta de verde
+        // Sucesso: mantém abertas e adiciona classe de acerto
+        cardOne.classList.remove("flipped");
+        cardTwo.classList.remove("flipped");
         cardOne.classList.add("matched");
         cardTwo.classList.add("matched");
+        
         matchedPairsCount++;
         flippedCards = [];
         isProcessing = false;
@@ -93,16 +104,16 @@ function checkMatch() {
         if (matchedPairsCount === cardData.length / 2) {
             setTimeout(() => {
                 alert(`Parabéns! Você aprendeu a combater a desinformação em ${totalAttempts} tentativas.`);
-            }, 300);
+            }, 400);
         }
     } else {
-        // Erro: vira de volta após um pequeno delay
+        // Erro: desvira após 1.5 segundos para dar tempo de ler o texto informativo
         setTimeout(() => {
             cardOne.classList.remove("flipped");
             cardTwo.classList.remove("flipped");
             flippedCards = [];
             isProcessing = false;
-        }, 1200);
+        }, 1500);
     }
 }
 
