@@ -1,134 +1,109 @@
-// Dados do Jogo - Pares Temáticos Visuais (Imagens Reais e Textos Educativos)
-const cardData = [
-    { id: 1, type: "fato", img: "https://unsplash.com", text: "FATO: Deepfakes usam Redes Generativas Adversariais (GANs)" },
-    { id: 1, type: "fato", img: "https://unsplash.com", text: "FATO: Deepfakes usam Redes Generativas Adversariais (GANs)" },
-    { id: 2, type: "fake", img: "https://unsplash.com", text: "FAKE: Vídeos de IA possuem sincronia labial 100% perfeita" },
-    { id: 2, type: "fake", img: "https://unsplash.com", text: "FAKE: Vídeos de IA possuem sincronia labial 100% perfeita" },
-    { id: 3, type: "fato", img: "https://unsplash.com", text: "FATO: O cansaço ocular ou piscar lento revela vídeos falsos" },
-    { id: 3, type: "fato", img: "https://unsplash.com", text: "FATO: O cansaço ocular ou piscar lento revela vídeos falsos" },
-    { id: 4, type: "fake", img: "https://unsplash.com", text: "FAKE: Ferramentas automatizadas barram 100% dos fakes" },
-    { id: 4, type: "fake", img: "https://unsplash.com", text: "FAKE: Ferramentas automatizadas barram 100% dos fakes" }
+// Banco de dados de perguntas do Quiz
+const quizData = [
+    {
+        question: "Se você receber um vídeo chocante de um influenciador no grupo da escola, qual deve ser sua primeira atitude?",
+        options: [
+            "Compartilhar imediatamente para avisar os amigos.",
+            "Ignorar e não falar com ninguém sobre isso.",
+            "Verificar se portais de notícias confiáveis estão falando sobre o assunto antes de repassar."
+        ],
+        correct: 2
+    },
+    {
+        question: "Qual dessas opções descreve melhor o que é uma 'Deepfake'?",
+        options: [
+            "Uma foto tirada de um ângulo ruim que distorce a realidade.",
+            "Um vídeo ou áudio alterado de forma realista por Inteligência Artificial.",
+            "Um vírus de computador que apaga arquivos do sistema."
+        ],
+        correct: 1
+    },
+    {
+        question: "Ao analisar um vídeo suspeito de ser modificado por IA, qual falha visual é comum encontrar?",
+        options: [
+            "Movimentos de piscar de olhos não naturais ou borrões ao redor do rosto.",
+            "O vídeo estar em preto e branco.",
+            "Legendas escritas em outro idioma."
+        ],
+        correct: 0
+    }
 ];
 
-// Seletores do DOM
-const gameGrid = document.getElementById("game-grid");
-const attemptsCounter = document.getElementById("attempts-counter");
-const resetBtn = document.getElementById("reset-game-btn");
-const toggleDarkModeBtn = document.getElementById("toggle-dark-mode");
-const feedbackForm = document.getElementById("feedback-form");
-const formMessage = document.getElementById("form-message");
+let currentQuestionIndex = 0;
+let score = 0;
 
-// Estado da Aplicação
-let flippedCards = [];
-let matchedPairsCount = 0;
-let totalAttempts = 0;
-let isProcessing = false;
+// Elementos da interface dominados pelo JS
+const questionElement = document.getElementById("question-text");
+const optionsBox = document.getElementById("options-box");
+const nextButton = document.getElementById("next-btn");
+const scoreBox = document.getElementById("score-box");
 
-// 1. Funcionalidade: Modo Escuro (Acessibilidade)
-toggleDarkModeBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
-});
+// Função para carregar a pergunta atual
+function loadQuestion() {
+    resetState();
+    let currentQuestion = quizData[currentQuestionIndex];
+    questionElement.innerText = currentQuestion.question;
 
-// 2. Lógica do Jogo: Embaralhar Cartas
-function shuffle(array) {
-    return array.sort(() => Math.random() - 0.5);
-}
-
-// Inicializar ou Reiniciar Tabuleiro
-function initGame() {
-    gameGrid.innerHTML = "";
-    flippedCards = [];
-    matchedPairsCount = 0;
-    totalAttempts = 0;
-    isProcessing = false;
-    attemptsCounter.textContent = totalAttempts;
-
-    const shuffledCards = shuffle([...cardData]);
-
-    shuffledCards.forEach(item => {
-        const cardElement = document.createElement("div");
-        cardElement.classList.add("memory-card");
-        cardElement.dataset.id = item.id;
-
-        // Estrutura com Frente (?) e Verso (Imagem + Texto Informativo)
-        cardElement.innerHTML = `
-            <div class="card-front-side">?</div>
-            <div class="card-back-side type-${item.type}">
-                <img src="${item.img}" alt="Ilustração sobre IA">
-                <p>${item.text}</p>
-            </div>
-        `;
-
-        cardElement.addEventListener("click", handleCardClick);
-        gameGrid.appendChild(cardElement);
+    currentQuestion.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.innerText = option;
+        button.classList.add("option-btn");
+        button.addEventListener("click", () => selectOption(button, index));
+        optionsBox.appendChild(button);
     });
 }
 
-// Gerenciar Cliques nas Cartas
-function handleCardClick(event) {
-    const clickedCard = event.currentTarget;
-
-    // Evita cliques inválidos ou cartas já viradas/combinadas
-    if (isProcessing || clickedCard.classList.contains("flipped") || clickedCard.classList.contains("matched")) {
-        return;
-    }
-
-    clickedCard.classList.add("flipped");
-    flippedCards.push(clickedCard);
-
-    // Se duas cartas foram viradas, checa o par
-    if (flippedCards.length === 2) {
-        totalAttempts++;
-        attemptsCounter.textContent = totalAttempts;
-        checkMatch();
+// Limpa o estado anterior das opções e botões
+function resetState() {
+    nextButton.style.display = "none";
+    while (optionsBox.firstChild) {
+        optionsBox.removeChild(optionsBox.firstChild);
     }
 }
 
-// Validar se as duas cartas abertas formam um par
-function checkMatch() {
-    isProcessing = true;
-    const [cardOne, cardTwo] = flippedCards;
+// Processa a escolha do usuário
+function selectOption(selectedButton, index) {
+    let correctIndex = quizData[currentQuestionIndex].correct;
+    let allButtons = optionsBox.children;
 
-    if (cardOne.dataset.id === cardTwo.dataset.id) {
-        // Sucesso: mantém abertas e adiciona classe de acerto
-        cardOne.classList.remove("flipped");
-        cardTwo.classList.remove("flipped");
-        cardOne.classList.add("matched");
-        cardTwo.classList.add("matched");
-        
-        matchedPairsCount++;
-        flippedCards = [];
-        isProcessing = false;
-
-        // Verifica vitória
-        if (matchedPairsCount === cardData.length / 2) {
-            setTimeout(() => {
-                alert(`Parabéns! Você aprendeu a combater a desinformação em ${totalAttempts} tentativas.`);
-            }, 400);
-        }
+    if (index === correctIndex) {
+        selectedButton.classList.add("correct");
+        score++;
     } else {
-        // Erro: desvira após 1.5 segundos para dar tempo de ler o texto informativo
-        setTimeout(() => {
-            cardOne.classList.remove("flipped");
-            cardTwo.classList.remove("flipped");
-            flippedCards = [];
-            isProcessing = false;
-        }, 1500);
+        selectedButton.classList.add("wrong");
+        allButtons[correctIndex].classList.add("correct"); // Revela a alternativa correta
+    }
+
+    // Trava os botões para impedir cliques múltiplos
+    for (let btn of allButtons) {
+        btn.disabled = true;
+    }
+
+    nextButton.style.display = "block";
+}
+
+// Avança para a próxima pergunta ou finaliza o jogo
+function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < quizData.length) {
+        loadQuestion();
+    } else {
+        showResults();
     }
 }
 
-// Ouvinte do Botão Reset
-resetBtn.addEventListener("click", initGame);
-
-// 3. Funcionalidade: Validação Dinâmica do Formulário sem recarregar a página
-feedbackForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const userName = document.getElementById("user-name").value;
+// Exibe o feedback final do desempenho no Quiz
+function showResults() {
+    resetState();
+    questionElement.innerText = "Quiz Concluído!";
+    scoreBox.innerText = `Você acertou ${score} de ${quizData.length} perguntas!`;
     
-    formMessage.textContent = `Obrigado, ${userName}! Seus dados ajudam a mapear a percepção sobre Deepfakes na nossa comunidade.`;
-    formMessage.classList.remove("hidden");
-    feedbackForm.reset();
-});
+    if(score === quizData.length) {
+        scoreBox.innerText += " 🎉 Parabéns! Você é um cidadão digital consciente!";
+    } else {
+        scoreBox.innerText += " 👍 Bom esforço! Continue atento ao navegar na rede.";
+    }
+}
 
-// Executa ao carregar a página
-initGame();
+// Inicializa o quiz assim que a página carrega
+loadQuestion();
