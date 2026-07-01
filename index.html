@@ -3,65 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Cidadania Digital & IA</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Cidadania Digital & IA: O Impacto das Deepfakes</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Acessibilidade e Cabeçalho -->
     <header>
-        <h1>Cidadania Digital & IA</h1>
-        <button id="toggle-dark-mode" aria-label="Alternar modo escuro">🌓 Alternar Modo</button>
+        <h1>Cidadania Digital & Inteligência Artificial</h1>
+        <p>O Impacto das Deepfakes e da Desinformação na Sociedade. Aprenda a navegar na era da inteligência artificial de forma crítica e segura.</p>
     </header>
 
     <main>
-        <!-- Introdução Teórica / Alinhamento com o Tema -->
-        <section class="intro-section">
-            <h2>O Impacto das Deepfakes e da Desinformação</h2>
-            <p>A Inteligência Artificial transformou a criação de conteúdos. Aprenda a diferenciar fatos de mídias manipuladas jogando o nosso mini-game de conscientização abaixo.</p>
-        </section>
-
-        <!-- Seção Interativa: Jogo da Memória -->
-        <section class="game-section">
-            <h2>Jogo da Memória: Fato ou Fake?</h2>
-            <div class="game-controls">
-                <p>Tentativas: <span id="attempts-counter">0</span></p>
-                <button id="reset-game-btn">Reiniciar Jogo</button>
+        <section class="content-section">
+            <h2 class="section-title">O Perigo das Deepfakes</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>O que são?</h3>
+                    <p>Deepfakes são vídeos, áudios ou imagens manipulados por Inteligência Artificial profunda (Deep Learning). Elas conseguem trocar rostos e clonar vozes de forma ultra-realista, fazendo pessoas dizerem ou fazerem coisas que nunca aconteceram.</p>
+                </div>
+                <div class="card">
+                    <h3>Fake News Automatizadas</h3>
+                    <p>Com a IA gerativa, criar boatos em massa se tornou fácil e rápido. Robôs e algoritmos podem criar textos e imagens falsas convincentes em segundos, espalhando desinformação e afetando a reputação de pessoas e instituições.</p>
+                </div>
             </div>
-            <!-- Grid do Jogo -->
-            <div class="memory-game" id="game-grid"></div>
         </section>
 
-        <!-- Formulário Semântico de Coleta de Dados/Engajamento -->
-        <section class="form-section">
-            <h2>Faça Parte da Mudança</h2>
-            <p>Você já foi impactado por uma notícia falsa esta semana?</p>
-            <form id="feedback-form">
-                <div class="form-group">
-                    <label for="user-name">Seu Nome:</label>
-                    <input type="text" id="user-name" required placeholder="Digite aqui...">
+        <section class="content-section">
+            <h2 class="section-title">Guia de Sobrevivência Digital</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>1. Olhe os Detalhes</h3>
+                    <p>Em vídeos, repare se o piscar de olhos é natural, se há sombras estranhas no rosto ou falhas na sincronia dos lábios com a fala.</p>
                 </div>
-
-                <div class="form-group">
-                    <label for="experience-select">Frequência com que vê Deepfakes:</label>
-                    <select id="experience-select" required>
-                        <option value="">Selecione...</option>
-                        <option value="alta">Diariamente</option>
-                        <option value="media">Às vezes</option>
-                        <option value="baixa">Raramente/Nunca</option>
-                    </select>
+                <div class="card">
+                    <h3>2. Duplo Clique na Fonte</h3>
+                    <p>A notícia parece chocante demais? Pesquise em veículos de comunicação confiáveis e agências de checagem de fatos antes de compartilhar.</p>
                 </div>
+                <div class="card">
+                    <h3>3. Use a Lógica</h3>
+                    <p>Se um áudio ou vídeo de uma figura pública traz declarações absurdas ou fora do comum, desconfie imediatamente do contexto.</p>
+                </div>
+            </div>
+        </section>
 
-                <button type="submit" id="submit-btn">Enviar Resposta</button>
-            </form>
-            <div id="form-message" class="hidden"></div>
+        <section class="content-section">
+            <h2 class="section-title">Desafio de Cidadania Digital</h2>
+            <div id="quiz-container">
+                <h3 id="question-text">Carregando pergunta...</h3>
+                <div class="options-container" id="options-box">
+                    </div>
+                <button class="btn-next" id="next-btn" onclick="nextQuestion()">Próxima Pergunta</button>
+                <div id="score-box"></div>
+            </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 Projeto Cidadania Digital. Desenvolvido para fins educacionais.</p>
+        <p>&copy; 2026 - Projeto Escolar de Conscientização Digital. Criado com HTML, CSS e JavaScript.</p>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
