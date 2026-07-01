@@ -1,26 +1,14 @@
-/* Variáveis de Cores e Hierarquia Visual */
+/* --- CONFIGURAÇÕES GERAIS E VARIÁVEIS --- */
 :root {
-    --bg-primary: #f4f7f6;
-    --bg-card: #ffffff;
-    --text-main: #1a1a1a;
-    --accent-color: #2563eb;
-    --accent-hover: #1d4ed8;
-    --card-back-bg: #1e293b;
-    --success: #16a34a;
-    --error: #ef4444;
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-color: #f8fafc;
+    --text-secondary: #94a3b8;
+    --primary: #6366f1;
+    --secondary: #10b981;
+    --accent: #ef4444;
 }
 
-/* Modo Escuro (Acionado via JS adicionando a classe no body) */
-body.dark-mode {
-    --bg-primary: #0f172a;
-    --bg-card: #1e293b;
-    --text-main: #f8fafc;
-    --accent-color: #3b82f6;
-    --accent-hover: #60a5fa;
-    --card-back-bg: #334155;
-}
-
-/* Reset Básico */
 * {
     margin: 0;
     padding: 0;
@@ -29,248 +17,145 @@ body.dark-mode {
 }
 
 body {
-    background-color: var(--bg-primary);
-    color: var(--text-main);
-    transition: background-color 0.3s ease, color 0.3s ease;
-    padding: 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
 }
 
-/* Layout do Cabeçalho com Flexbox */
+/* --- TOPO / HEADER --- */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 2px solid var(--accent-color);
-    margin-bottom: 30px;
+    background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+    padding: 4rem 2rem;
+    text-align: center;
+    border-bottom: 2px solid #312e81;
 }
 
-header button {
-    padding: 8px 16px;
-    cursor: pointer;
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    transition: background 0.2s;
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #818cf8, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-header button:hover {
-    background-color: var(--accent-hover);
-}
-
-main {
-    max-width: 900px;
+header p {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    max-width: 800px;
     margin: 0 auto;
 }
 
-section {
-    background: var(--bg-card);
-    padding: 20px;
-    margin-bottom: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+/* --- ESTRUTURA PRINCIPAL --- */
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
 }
 
-h2 {
-    margin-bottom: 15px;
-    color: var(--accent-color);
+.content-section {
+    margin-bottom: 4rem;
 }
 
-/* Tabuleiro do Jogo da Memória */
-.game-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    font-weight: bold;
+.section-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #818cf8;
+    border-left: 4px solid var(--primary);
+    padding-left: 10px;
 }
 
-#reset-game-btn {
-    padding: 6px 12px;
-    background: var(--accent-color);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.memory-game {
+.grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
 }
 
-/* Estilo das Cartas */
-.memory-card {
-    height: 160px;
-    position: relative;
-    border-radius: 8px;
-    cursor: pointer;
-    user-select: none;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    background-color: var(--card-back-bg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.2s ease;
+/* --- CARTÕES DE CONTEÚDO --- */
+.card {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease;
 }
 
-.memory-card:hover {
-    transform: scale(1.02);
+.card:hover {
+    transform: translateY(-5px);
 }
 
-/* Conteúdos Internos da Carta */
-.card-front-side {
-    color: white;
-    font-size: 2.5rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.card h3 {
+    margin-bottom: 1rem;
+    color: #34d399;
 }
 
-.card-back-side {
-    display: none;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    border-radius: 8px;
-    overflow: hidden;
+/* --- SEÇÃO DO QUIZ --- */
+#quiz-container {
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 16px;
+    border: 1px solid #334155;
 }
 
-.card-back-side img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.3); /* Escurece a imagem para dar leitura ao texto */
-}
-
-.card-back-side p {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    font-size: 0.85rem;
-    font-weight: 600;
-    box-sizing: border-box;
-}
-
-/* Estados Dinâmicos via JS */
-.memory-card.flipped {
-    background-color: transparent;
-}
-
-.memory-card.flipped .card-front-side {
-    display: none;
-}
-
-.memory-card.flipped .card-back-side {
-    display: block;
-    border: 3px solid var(--accent-color);
-}
-
-/* Diferenciação de Cores para Fato e Fake */
-.memory-card.flipped .card-back-side.type-fato {
-    border-color: var(--success);
-}
-
-.memory-card.flipped .card-back-side.type-fake {
-    border-color: var(--error);
-}
-
-/* Par Correto Encontrado */
-.memory-card.matched {
-    cursor: default;
-    transform: none;
-}
-
-.memory-card.matched .card-front-side {
-    display: none;
-}
-
-.memory-card.matched .card-back-side {
-    display: block;
-    border: 3px solid var(--success);
-}
-
-.memory-card.matched .card-back-side img {
-    filter: brightness(0.4);
-}
-
-/* Formulário Semântico */
-.form-group {
+.options-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 15px;
+    gap: 1rem;
+    margin: 1.5rem 0;
 }
 
-.form-group label {
-    margin-bottom: 5px;
-    font-weight: 600;
+.option-btn {
+    background-color: #334155;
+    color: var(--text-color);
+    border: 2px solid transparent;
+    padding: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 1rem;
+    transition: all 0.2s ease;
 }
 
-.form-group input, .form-group select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background: var(--bg-primary);
-    color: var(--text-main);
+.option-btn:hover {
+    background-color: #475569;
 }
 
-#submit-btn {
-    width: 100%;
-    padding: 12px;
-    background: var(--success);
+.option-btn.correct {
+    background-color: #065f46;
+    border-color: var(--secondary);
+}
+
+.option-btn.wrong {
+    background-color: #991b1b;
+    border-color: var(--accent);
+}
+
+.btn-next {
+    background-color: var(--primary);
     color: white;
     border: none;
+    padding: 0.75rem 1.5rem;
     border-radius: 6px;
-    font-weight: bold;
     cursor: pointer;
-}
-
-.hidden {
+    font-weight: bold;
     display: none;
 }
 
-#form-message {
-    margin-top: 15px;
-    padding: 10px;
-    background: rgba(22, 163, 74, 0.2);
-    border-left: 4px solid var(--success);
-    border-radius: 4px;
+.btn-next:hover {
+    background-color: #4f46e5;
 }
 
+#score-box {
+    margin-top: 1rem;
+    font-weight: bold;
+    color: var(--secondary);
+}
+
+/* --- RODAPÉ --- */
 footer {
     text-align: center;
-    margin-top: 40px;
-    font-size: 0.85rem;
-    opacity: 0.7;
-}
-
-/* 📱 Ajustes de Responsividade */
-@media (max-width: 768px) {
-    .memory-game {
-        grid-template-columns: repeat(2, 1fr); /* 2 cartas por linha no mobile */
-    }
-    
-    .memory-card {
-        height: 140px;
-    }
-}
-
-@media (max-width: 600px) {
-    header {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-    }
+    padding: 2rem;
+    background-color: #020617;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 4rem;
 }
