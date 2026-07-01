@@ -1,109 +1,120 @@
-// Banco de dados de perguntas do Quiz
-const quizData = [
+const questions = [
     {
-        question: "Se você receber um vídeo chocante de um influenciador no grupo da escola, qual deve ser sua primeira atitude?",
+        question: "Um vídeo de uma figura pública fazendo uma declaração absurda surgiu nas redes, mas a boca dela parece não sincronizar perfeitamente com o áudio. O que isso pode indicar?",
         options: [
-            "Compartilhar imediatamente para avisar os amigos.",
-            "Ignorar e não falar com ninguém sobre isso.",
-            "Verificar se portais de notícias confiáveis estão falando sobre o assunto antes de repassar."
+            "Um problema comum na conexão de internet de quem gravou.",
+            "Uma manipulação por inteligência artificial (Deepfake).",
+            "Que o vídeo foi gravado em câmera lenta."
         ],
-        correct: 2
+        answer: 1
     },
     {
-        question: "Qual dessas opções descreve melhor o que é uma 'Deepfake'?",
+        question: "Como os robôs de IA (bots) facilitam a propagação de Fake News?",
         options: [
-            "Uma foto tirada de um ângulo ruim que distorce a realidade.",
-            "Um vídeo ou áudio alterado de forma realista por Inteligência Artificial.",
-            "Um vírus de computador que apaga arquivos do sistema."
+            "Eles corrigem os erros de português das notícias verdadeiras.",
+            "Eles geram e compartilham textos falsos automaticamente em larga escala.",
+            "Eles deletam posts suspeitos de redes sociais automaticamente."
         ],
-        correct: 1
+        answer: 1
     },
     {
-        question: "Ao analisar um vídeo suspeito de ser modificado por IA, qual falha visual é comum encontrar?",
+        question: "Qual é a conduta mais responsável da cidadania digital ao receber uma notícia alarmante?",
         options: [
-            "Movimentos de piscar de olhos não naturais ou borrões ao redor do rosto.",
-            "O vídeo estar em preto e branco.",
-            "Legendas escritas em outro idioma."
+            "Verificar em agências de checagem e portais confiáveis antes de repassar.",
+            "Compartilhar nos grupos para ver se alguém sabe se é verdade.",
+            "Postar imediatamente para garantir curtidas e alcance."
         ],
-        correct: 0
+        answer: 0
     }
 ];
 
-let currentQuestionIndex = 0;
-let score = 0;
+let currentIndex = 0;
+let userScore = 0;
+let optionSelected = false;
 
-// Elementos da interface dominados pelo JS
-const questionElement = document.getElementById("question-text");
-const optionsBox = document.getElementById("options-box");
-const nextButton = document.getElementById("next-btn");
-const scoreBox = document.getElementById("score-box");
+const questionText = document.getElementById("question-text");
+const optionsContainer = document.getElementById("options-container");
+const progressIndicator = document.getElementById("progress-indicator");
+const btnNext = document.getElementById("btn-next");
+const questionBox = document.getElementById("question-box");
+const resultBox = document.getElementById("result-box");
+const resultText = document.getElementById("result-text");
 
-// Função para carregar a pergunta atual
-function loadQuestion() {
-    resetState();
-    let currentQuestion = quizData[currentQuestionIndex];
-    questionElement.innerText = currentQuestion.question;
+function startQuiz() {
+    currentIndex = 0;
+    userScore = 0;
+    questionBox.classList.remove("hidden");
+    resultBox.classList.add("hidden");
+    progressIndicator.classList.remove("hidden");
+    showQuestion();
+}
+
+function showQuestion() {
+    optionSelected = false;
+    btnNext.classList.add("hidden");
+    optionsContainer.innerHTML = "";
+    
+    const currentQuestion = questions[currentIndex];
+    questionText.textContent = currentQuestion.question;
+    progressIndicator.textContent = `Pergunta ${currentIndex + 1} de ${questions.length}`;
 
     currentQuestion.options.forEach((option, index) => {
         const button = document.createElement("button");
-        button.innerText = option;
-        button.classList.add("option-btn");
-        button.addEventListener("click", () => selectOption(button, index));
-        optionsBox.appendChild(button);
+        button.textContent = option;
+        button.classList.add("option-button");
+        button.addEventListener("click", () => evaluateAnswer(button, index));
+        optionsContainer.appendChild(button);
     });
 }
 
-// Limpa o estado anterior das opções e botões
-function resetState() {
-    nextButton.style.display = "none";
-    while (optionsBox.firstChild) {
-        optionsBox.removeChild(optionsBox.firstChild);
-    }
-}
+function evaluateAnswer(selectedButton, index) {
+    if (optionSelected) return;
+    optionSelected = true;
 
-// Processa a escolha do usuário
-function selectOption(selectedButton, index) {
-    let correctIndex = quizData[currentQuestionIndex].correct;
-    let allButtons = optionsBox.children;
+    const correctIndex = questions[currentIndex].answer;
+    const allButtons = optionsContainer.children;
 
     if (index === correctIndex) {
         selectedButton.classList.add("correct");
-        score++;
+        userScore++;
     } else {
         selectedButton.classList.add("wrong");
-        allButtons[correctIndex].classList.add("correct"); // Revela a alternativa correta
+        allButtons[correctIndex].classList.add("correct");
     }
 
-    // Trava os botões para impedir cliques múltiplos
     for (let btn of allButtons) {
         btn.disabled = true;
     }
 
-    nextButton.style.display = "block";
+    btnNext.classList.remove("hidden");
 }
 
-// Avança para a próxima pergunta ou finaliza o jogo
-function nextQuestion() {
-    currentQuestionIndex++;
-    if (currentQuestionIndex < quizData.length) {
-        loadQuestion();
+function handleNextClick() {
+    currentIndex++;
+    if (currentIndex < questions.length) {
+        showQuestion();
     } else {
-        showResults();
+        displayResults();
     }
 }
 
-// Exibe o feedback final do desempenho no Quiz
-function showResults() {
-    resetState();
-    questionElement.innerText = "Quiz Concluído!";
-    scoreBox.innerText = `Você acertou ${score} de ${quizData.length} perguntas!`;
-    
-    if(score === quizData.length) {
-        scoreBox.innerText += " 🎉 Parabéns! Você é um cidadão digital consciente!";
+function displayResults() {
+    questionBox.classList.add("hidden");
+    progressIndicator.classList.add("hidden");
+    btnNext.classList.add("hidden");
+    resultBox.classList.remove("hidden");
+
+    resultText.innerHTML = `Você acertou <strong>${userScore} de ${questions.length}</strong> questões.<br><br>`;
+    if (userScore === questions.length) {
+        resultText.innerHTML += "🏆 Excelente! Você possui um ótimo senso crítico digital.";
     } else {
-        scoreBox.innerText += " 👍 Bom esforço! Continue atento ao navegar na rede.";
+        resultText.innerHTML += "📚 Bom esforço! Fique sempre atento aos detalhes na internet.";
     }
 }
 
-// Inicializa o quiz assim que a página carrega
-loadQuestion();
+function restartQuiz() {
+    startQuiz();
+}
+
+// Inicialização automática do Quiz
+document.addEventListener("DOMContentLoaded", startQuiz);
